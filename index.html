@@ -67,11 +67,11 @@
         min-width: 100px;
     }
     button:hover {
-        transform: scale(1.05);
+        transform: scale(1.15);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     #no {
-        background: linear-gradient(45deg, #FF6347, #DC143C);
+        background: linear-gradient(60deg, #FF6347, #DC143C);
         border-color: #B22222;
         position: relative;
     }
@@ -79,7 +79,7 @@
         margin-top: 30px;
         font-size: 1.5rem;
         color: #228B22;
-        background: linear-gradient(45deg, #faedcd, #f5f5dc);
+        background: linear-gradient(60deg, #faedcd, #f5f5dc);
         border-radius: 15px;
         border: 2px solid #8b4513;
         padding: 15px;
@@ -139,13 +139,13 @@ noBtn.addEventListener("mouseover", () => {
     });
 
     function Xaxis() {
-        let num = Math.floor(Math.random() * 200) + 50; // Random between 50-250px
+        let num = Math.floor(Math.random() * 200) + 100; // Random between 50-250px
         let sign = Math.random();
         return (sign < 0.5 ? -1 : 1) * num + "px";
     }
 
     function Yaxis() {
-        let num = Math.floor(Math.random() * 200) + 50;
+        let num = Math.floor(Math.random() * 200) + 100;
         let sign = Math.random();
         return (sign < 0.5 ? -1 : 1) * num + "px";
     }
