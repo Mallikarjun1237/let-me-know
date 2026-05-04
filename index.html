@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Let me know the truth</title>
 </head>
 <style>
-    *{
-        margin:0px;
-        padding:0px;
+    * {
+        margin: 0px;
+        padding: 0px;
         box-sizing: border-box;
         text-align: center;
         background-color: #e9edc9;
@@ -20,9 +20,10 @@
         align-items: center;
         min-height: 100vh;
         padding: 20px;
+        overflow: hidden; /* Prevent scrollbars when button moves */
     }
-    .head{
-        background: linear-gradient(45deg, #faedcd, #d4a574);
+    .head {
+        background: linear-gradient(45deg, #e1d2ae, #ed9d48);
         font-size: 2.5rem;
         padding: 20px;
         border: 3px solid #8b4513;
@@ -34,7 +35,7 @@
         width: 90%;
         max-width: 600px;
     }
-    .content{
+    .content {
         margin-top: 40px;
         font-size: 1.5rem;
         display: flex;
@@ -43,43 +44,46 @@
         width: 100%;
         max-width: 600px;
     }
-    .content p{
+    .content p {
         margin: 10px 0;
         color: #333;
     }
-
     .options {
         display: flex;
         gap: 20px;
         margin: 20px 0;
         flex-wrap: wrap;
         justify-content: center;
+        /* Needs to be relative so Yes button stays in flow */
+        position: relative;
     }
-    button{
+    button {
         font-size: 1.5rem;
         border-radius: 10px;
         background: linear-gradient(45deg, #90EE90, #32CD32);
         border: 2px solid #228B22;
         padding: 10px 20px;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: box-shadow 0.3s ease;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         min-width: 100px;
     }
     button:hover {
-        transform: scale(1.15);
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+    /* No button is fixed so it can roam the full screen freely */
     #no {
         background: linear-gradient(60deg, #FF6347, #DC143C);
         border-color: #B22222;
-        position: relative;
+        position: fixed;
+        transition: top 0.15s ease, left 0.15s ease, box-shadow 0.3s ease;
+        z-index: 999;
     }
-    .msaag{
+    .msaag {
         margin-top: 30px;
         font-size: 1.5rem;
         color: #228B22;
-        background: linear-gradient(60deg, #faedcd, #f5f5dc);
+        background: linear-gradient(45deg, #faedcd, #f5f5dc);
         border-radius: 15px;
         border: 2px solid #8b4513;
         padding: 15px;
@@ -87,6 +91,7 @@
         max-width: 500px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
+
     @media (max-width: 600px) {
         .head {
             font-size: 2rem;
@@ -108,8 +113,6 @@
             padding: 10px;
         }
     }
-
-
 </style>
 <body>
     <p class="head">Let me know the truth</p>
@@ -121,35 +124,55 @@
         </div>
         <div class="msaag">Choose wisely...</div>
     </div>
-
-    
 </body>
 <script>
     const msg = document.querySelector(".msaag");
     const yesBtn = document.querySelector("#yes");
     const noBtn = document.querySelector("#no");
 
-noBtn.addEventListener("mouseover", () => {
-        noBtn.style.transform = `translate(${Xaxis()}, ${Yaxis()})`;
-    });
+    // Place the No button at its natural position on load
+    function initNoBtn() {
+        const rect = noBtn.getBoundingClientRect();
+        noBtn.style.top = rect.top + "px";
+        noBtn.style.left = rect.left + "px";
+        noBtn.style.width = rect.width + "px";
+        noBtn.style.height = rect.height + "px";
+    }
+
+    window.addEventListener("load", initNoBtn);
+
+    // Returns a random position keeping the button fully inside the viewport
+    // Uses percentages of screen size so it works on any device
+    function getRandomPosition() {
+        const btnW = noBtn.offsetWidth;
+        const btnH = noBtn.offsetHeight;
+
+        const maxX = window.innerWidth - btnW;
+        const maxY = window.innerHeight - btnH;
+
+        // Random position as a fraction of screen, then convert to px
+        const newX = Math.random() * maxX;
+        const newY = Math.random() * maxY;
+
+        return { x: newX, y: newY };
+    }
+
+    function runAway() {
+        const { x, y } = getRandomPosition();
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+
+    // Works on desktop (hover) AND mobile (touch)
+    noBtn.addEventListener("mouseover", runAway);
+    noBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault(); // Prevent touch from firing click
+        runAway();
+    }, { passive: false });
 
     yesBtn.addEventListener("click", () => {
-        msg.innerText = "Great choice! I knew it👍😎😅😅✌️...";
+        msg.innerText = "Great choice! I knew it 👍😎😅😅✌️...";
         msg.style.color = "#228B22";
     });
-
-    function Xaxis() {
-        let num = Math.floor(Math.random() * 200) + 100; // Random between 50-250px
-        let sign = Math.random();
-        return (sign < 0.5 ? -1 : 1) * num + "px";
-    }
-
-    function Yaxis() {
-        let num = Math.floor(Math.random() * 200) + 100;
-        let sign = Math.random();
-        return (sign < 0.5 ? -1 : 1) * num + "px";
-    }
-
-
 </script>
 </html>
